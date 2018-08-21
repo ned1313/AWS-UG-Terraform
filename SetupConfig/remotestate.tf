@@ -13,6 +13,9 @@ variable "aws_dynamodb_table" {
     default = "awsug08232018-tfstatelock"
 }
 
+variable "user_home_path" {}
+
+
 ##################################################################################
 # PROVIDERS
 ##################################################################################
@@ -95,6 +98,15 @@ resource "aws_iam_user_policy" "remotestate_rw" {
 EOF
 }
 
+resource "local_file" "aws_keys" {
+    content = <<EOF
+[default]
+aws_access_key_id = ${var.aws_access_key}
+aws_secret_access_key = ${var.aws_secret_key}
+EOF
+    filename = "${var.user_home_path}/.aws/credentials"
+
+}
 
 ##################################################################################
 # OUTPUT

@@ -1,0 +1,6 @@
+terraform init --var-file=..\terraform.tfvars -backend-config="bucket=awsug08232018-remotestate" -backend-config="dynamodb_table=awsug08232018-tfstatelock"
+terraform workspace new dev
+terraform workspace list
+terraform plan --var-file=..\terraform.tfvars -out terraform.tfplan
+terraform apply "terraform.tfplan"
+terraform destroy --var-file=..\terraform.tfvars
