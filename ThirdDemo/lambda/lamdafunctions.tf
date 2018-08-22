@@ -6,7 +6,7 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 variable "aws_dynamodb_table" {
-  default = "ddt-datasource"
+  default = "ned-ddt-datasource"
 }
 
 variable "accountId" {}

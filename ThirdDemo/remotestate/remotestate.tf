@@ -6,15 +6,15 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 variable "aws_networking_bucket" {
-  default = "ddt-networking"
+  default = "ned-ddt-networking"
 }
 
 variable "aws_application_bucket" {
-  default = "ddt-application"
+  default = "ned-ddt-application"
 }
 
 variable "aws_dynamodb_table" {
-  default = "ddt-tfstatelock"
+  default = "ned-ddt-tfstatelock"
 }
 
 ##################################################################################
