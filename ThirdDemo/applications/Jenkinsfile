@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('ApplicationInit'){
             steps {
-                dir('module5/applications/'){
+                dir('ThirdDemo/applications/'){
                     sh "terraform init -input=false -plugin-dir=/var/jenkins_home/terraform_plugins \
                      --backend-config='dynamodb_table=${params.DYNAMODBTABLE}' --backend-config='bucket=${params.REMOTESTATEBUCKET}' \
                      --backend-config='access_key=$APPLICATION_ACCESS_KEY' --backend-config='secret_key=$APPLICATION_SECRET_KEY'"
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('ApplicationPlan'){
             steps {
-                dir('module5/applications/'){
+                dir('ThirdDemo/applications/'){
                     script {
                         try {
                             sh "terraform workspace new ${params.WORKSPACE}"
@@ -53,14 +53,14 @@ pipeline {
                         apply = true
                     } catch (err) {
                         apply = false
-                        dir('module5/applications'){
+                        dir('ThirdDemo/applications'){
                             sh "terraform destroy -var 'aws_access_key=$APPLICATION_ACCESS_KEY' \
                              -var 'aws_secret_key=$APPLICATION_SECRET_KEY' -var 'url=${params.LAMBDA_URL}' -force"
                         }
                          currentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-                        dir('module5/applications'){
+                        dir('ThirdDemo/applications'){
                             unstash "terraform-application-plan"
                             sh 'terraform apply terraform-application.tfplan'
                         }
