@@ -1,18 +1,18 @@
 pipeline {
     agent any
     tools {
-        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform-0.11.1"
+        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform-0.11.8"
     }
     parameters {
         string(name: 'LAMBDA_URL', defaultValue: '', description: 'URL to the Lamdba function')
-        string(name: 'WORKSPACE', defaultValue: 'development', description:'worspace to use in Terraform')
+        string(name: 'WORKSPACE', defaultValue: 'development', description:'workspace to use in Terraform')
+        string(name: 'DYNAMODBTABLE', defaultValue: '', description:'DynamoDB table to store state lock info')
+        string(name: 'REMOTESTATEBUCKET', defaultValue: '', description: 'S3 Bucket to store remote state')
     }
     environment {
-        TF_HOME = tool('terraform-0.11.1')
+        TF_HOME = tool('terraform-0.11.8')
         TF_IN_AUTOMATION = "true"
         PATH = "$TF_HOME:$PATH"
-        DYNAMODB_STATELOCK = "ddt-tfstatelock"
-        APPLICATION_BUCKET = "ddt-application"
         APPLICATION_ACCESS_KEY = credentials('application_access_key')
         APPLICATION_SECRET_KEY = credentials('application_secret_key')
     }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 dir('module5/applications/'){
                     sh "terraform init -input=false -plugin-dir=/var/jenkins_home/terraform_plugins \
-                     --backend-config='dynamodb_table=$DYNAMODB_STATELOCK' --backend-config='bucket=$APPLICATION_BUCKET' \
+                     --backend-config='dynamodb_table=${params.DYNAMODBTABLE}' --backend-config='bucket=${params.REMOTESTATEBUCKET}' \
                      --backend-config='access_key=$APPLICATION_ACCESS_KEY' --backend-config='secret_key=$APPLICATION_SECRET_KEY'"
                     sh "echo \$PWD"
                     sh "whoami"

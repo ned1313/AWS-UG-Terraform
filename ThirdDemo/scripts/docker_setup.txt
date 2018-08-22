@@ -1,6 +1,6 @@
 #Open an admin PowerShell
 docker pull jenkins/jenkins:lts
-docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+docker run --name 'jenkinslocal' -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 
 #Copy the admin password
 http://127.0.0.1:8080
@@ -10,8 +10,8 @@ http://127.0.0.1:8080
 
 #Copy Terraform plugins
 docker ps
-docker cp .\terraform_plugins container_name:/var/jenkins_home
+docker cp .\terraform_plugins jenkinslocal:/var/jenkins_home
 
-docker exec -it -u root gallant_neumann /bin/bash
+docker exec -it -u root jenkinslocal /bin/bash
 apt-get update
 apt-get install jq -y
