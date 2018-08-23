@@ -1,0 +1,5 @@
+https://dik7b81pid.execute-api.us-west-2.amazonaws.com/prod/tdd_ddb_query
+ned-ddt-tfstatelock
+ned-ddt-networking
+
+ned-ddt-application

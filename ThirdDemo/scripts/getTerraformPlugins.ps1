@@ -13,9 +13,9 @@ foreach($plugin in $plugins){
     #get the main plugin directory
     $resp = Invoke-WebRequest -Uri "https://releases.hashicorp.com/$plugin/"
     #Find the latest version of the plugin
-    $version = $resp.ParsedHtml.getElementsByTagName("li") | Sort-Object -Property innerText -Descending | select -First 1
-    $versionPath = $version.getElementsByTagName("a") | select pathname
-    $fileName = [string] $version.innerText.Trim() + "_linux_amd64.zip"
+    $versions = $resp.ParsedHtml.getElementsByTagName("li")
+    $versionPath = $versions[1].getElementsByTagName("a") | select pathname
+    $fileName = [string] $versions[1].innerText.Trim() + "_linux_amd64.zip"
     $downloadPath = [string] $versionPath.pathname + $fileName
     #Download the plugin for Linux
     Invoke-WebRequest -Uri "https://releases.hashicorp.com/$downloadPath" -OutFile "$folderpath\$fileName"
