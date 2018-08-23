@@ -6,8 +6,8 @@ pipeline {
     parameters {
         string(name: 'LAMBDA_URL', defaultValue: '', description: 'URL to the Lamdba function')
         string(name: 'WORKSPACE', defaultValue: 'development', description:'worspace to use in Terraform')
-        string(name: 'DYNAMODBTABLE', defaultValue: '', description:'DynamoDB table to store state lock info')
-        string(name: 'REMOTESTATEBUCKET', defaultValue: '', description: 'S3 Bucket to store remote state')
+        string(name: 'DYNAMODBTABLE', defaultValue: 'ned-ddt-tfstatelock', description:'DynamoDB table to store state lock info')
+        string(name: 'NETREMOTESTATEBUCKET', defaultValue: 'ned-ddt-networking', description: 'S3 Bucket to store remote state')
     }
     environment {
         TF_HOME = tool('terraform-0.11.8')
@@ -22,7 +22,7 @@ pipeline {
                 dir('ThirdDemo/networking/'){
                     sh 'terraform --version'
                     sh "terraform init -input=false -plugin-dir=/var/jenkins_home/terraform_plugins \
-                     --backend-config='dynamodb_table=${params.DYNAMODBTABLE}' --backend-config='bucket=${params.REMOTESTATEBUCKET}' \
+                     --backend-config='dynamodb_table=${params.DYNAMODBTABLE}' --backend-config='bucket=${params.NETREMOTESTATEBUCKET}' \
                      --backend-config='access_key=$NETWORKING_ACCESS_KEY' --backend-config='secret_key=$NETWORKING_SECRET_KEY'"
                     sh "echo \$PWD"
                     sh "whoami"
