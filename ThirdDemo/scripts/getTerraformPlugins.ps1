@@ -9,6 +9,7 @@ if(-not (Test-Path $folderpath)){
     New-Item -Path $folderpath -ItemType Directory
 }
 
+#This assumes that the first entry in the list is the most recent plugin
 foreach($plugin in $plugins){
     #get the main plugin directory
     $resp = Invoke-WebRequest -Uri "https://releases.hashicorp.com/$plugin/"
